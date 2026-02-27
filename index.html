@@ -2,373 +2,562 @@
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a0a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>8 Наурыз — Наркес</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* ============================================
+   RESET & BASE
+============================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-  body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1a0a0f 0%, #2d0e1c 25%, #1a0a0f 50%, #2d1020 75%, #1a0a0f 100%);
-    font-family: 'Cormorant Garamond', serif;
-    overflow: hidden;
-    position: relative;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
-  /* Ambient background glow */
-  body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(255,180,180,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(255,150,180,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(200,100,130,0.05) 0%, transparent 60%);
-    animation: ambientShift 8s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
+body {
+  min-height: 100vh;
+  min-height: 100dvh; /* dynamic viewport for mobile browsers */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,
+    #1a0a0f 0%,
+    #2d0e1c 25%,
+    #1a0a0f 50%,
+    #2d1020 75%,
+    #1a0a0f 100%);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  padding: 16px;
+}
 
-  @keyframes ambientShift {
-    0% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1.1) rotate(5deg); }
-  }
+/* ============================================
+   AMBIENT BACKGROUND GLOW
+============================================ */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,180,180,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(255,150,180,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(200,100,130,0.05) 0%, transparent 60%);
+  animation: ambientShift 8s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
 
-  /* Floating petals */
-  .petal-container {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-  }
+@keyframes ambientShift {
+  0%   { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.1) rotate(5deg); }
+}
 
-  .petal {
-    position: absolute;
-    top: -60px;
-    opacity: 0;
-    animation: petalFall linear infinite;
-  }
+/* ============================================
+   FLOATING PETALS
+============================================ */
+.petal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
 
-  .petal svg { display: block; }
+.petal {
+  position: absolute;
+  top: -60px;
+  opacity: 0;
+  animation: petalFall linear infinite;
+  will-change: transform, opacity;
+}
 
-  @keyframes petalFall {
-    0%   { transform: translateY(0) translateX(0) rotate(0deg) scale(0.8);   opacity: 0; }
-    5%   { opacity: 1; }
-    90%  { opacity: 0.6; }
-    100% { transform: translateY(110vh) translateX(80px) rotate(720deg) scale(1.1); opacity: 0; }
-  }
+.petal svg { display: block; }
 
-  /* Card wrapper */
-  .card-wrapper {
-    position: relative;
-    z-index: 10;
-    width: 520px;
-    perspective: 1200px;
-  }
+@keyframes petalFall {
+  0%   { transform: translateY(0)      translateX(0)    rotate(0deg)   scale(0.8); opacity: 0; }
+  5%   { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(110vh)  translateX(60px) rotate(540deg) scale(1.1); opacity: 0; }
+}
 
-  .card {
-    width: 100%;
-    background: linear-gradient(160deg,
-      rgba(255,240,245,0.97) 0%,
-      rgba(255,225,235,0.97) 30%,
-      rgba(255,210,225,0.97) 60%,
-      rgba(255,230,240,0.97) 100%);
-    border-radius: 28px;
-    padding: 48px 44px 52px;
-    box-shadow:
-      0 0 0 1px rgba(255,180,200,0.4),
-      0 0 40px rgba(255,100,150,0.25),
-      0 0 80px rgba(255,80,130,0.15),
-      0 30px 80px rgba(0,0,0,0.5),
-      inset 0 1px 0 rgba(255,255,255,0.9),
-      inset 0 -1px 0 rgba(255,180,200,0.3);
-    position: relative;
-    overflow: hidden;
-    animation: cardEntry 1.2s cubic-bezier(0.22,1,0.36,1) both;
-    transform-style: preserve-3d;
-  }
+/* ============================================
+   CARD WRAPPER — FLUID SIZING
+============================================ */
+.card-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 520px;
+  perspective: 1200px;
+}
 
-  @keyframes cardEntry {
-    0%   { opacity: 0; transform: translateY(60px) scale(0.92) rotateX(8deg); }
-    100% { opacity: 1; transform: translateY(0)   scale(1)    rotateX(0deg); }
-  }
+/* ============================================
+   CARD
+============================================ */
+.card {
+  width: 100%;
+  background: linear-gradient(160deg,
+    rgba(255,240,245,0.97) 0%,
+    rgba(255,225,235,0.97) 30%,
+    rgba(255,210,225,0.97) 60%,
+    rgba(255,230,240,0.97) 100%);
+  border-radius: clamp(16px, 4vw, 28px);
+  padding: clamp(24px, 5vw, 48px) clamp(20px, 5vw, 44px) clamp(28px, 5.5vw, 52px);
+  box-shadow:
+    0 0 0 1px rgba(255,180,200,0.4),
+    0 0 40px rgba(255,100,150,0.25),
+    0 0 80px rgba(255,80,130,0.15),
+    0 20px 60px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -1px 0 rgba(255,180,200,0.3);
+  position: relative;
+  overflow: hidden;
+  animation: cardEntry 1.2s cubic-bezier(0.22,1,0.36,1) both;
+  transform-style: preserve-3d;
+  /* Ensure card never causes horizontal scroll */
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
 
-  /* Card shimmer overlay */
-  .card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg,
-      transparent 30%,
-      rgba(255,255,255,0.18) 50%,
-      transparent 70%);
-    animation: shimmer 4s ease-in-out infinite;
-    pointer-events: none;
-    border-radius: 28px;
-  }
+@keyframes cardEntry {
+  0%   { opacity: 0; transform: translateY(50px) scale(0.93) rotateX(6deg); }
+  100% { opacity: 1; transform: translateY(0)    scale(1)    rotateX(0deg); }
+}
 
-  @keyframes shimmer {
-    0%   { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
+/* Shimmer sweep */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+    transparent 30%,
+    rgba(255,255,255,0.18) 50%,
+    transparent 70%);
+  animation: shimmer 4s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
 
-  /* Gold border frame */
-  .card::after {
-    content: '';
-    position: absolute;
-    inset: 8px;
-    border: 1.5px solid rgba(212,175,55,0.35);
-    border-radius: 22px;
-    pointer-events: none;
-  }
+@keyframes shimmer {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
 
-  /* Corner ornaments */
-  .corner {
-    position: absolute;
-    width: 70px;
-    height: 70px;
-    opacity: 0.55;
-  }
-  .corner-tl { top: 14px; left: 14px; }
-  .corner-tr { top: 14px; right: 14px; transform: scaleX(-1); }
-  .corner-bl { bottom: 14px; left: 14px; transform: scaleY(-1); }
-  .corner-br { bottom: 14px; right: 14px; transform: scale(-1); }
+/* Gold inner border frame */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: clamp(4px, 1.5vw, 8px);
+  border: 1.5px solid rgba(212,175,55,0.35);
+  border-radius: calc(clamp(16px, 4vw, 28px) - 4px);
+  pointer-events: none;
+}
 
-  /* Header flower cluster */
-  .flower-header {
-    text-align: center;
-    margin-bottom: 18px;
-    position: relative;
-    z-index: 2;
-    animation: floatBob 4s ease-in-out infinite;
-  }
+/* ============================================
+   CORNER ORNAMENTS
+============================================ */
+.corner {
+  position: absolute;
+  opacity: 0.55;
+  /* Fluid corner sizing */
+  width: clamp(40px, 10vw, 70px);
+  height: clamp(40px, 10vw, 70px);
+}
+.corner-tl { top: clamp(8px, 2vw, 14px);  left:  clamp(8px, 2vw, 14px); }
+.corner-tr { top: clamp(8px, 2vw, 14px);  right: clamp(8px, 2vw, 14px); transform: scaleX(-1); }
+.corner-bl { bottom: clamp(8px, 2vw, 14px); left:  clamp(8px, 2vw, 14px); transform: scaleY(-1); }
+.corner-br { bottom: clamp(8px, 2vw, 14px); right: clamp(8px, 2vw, 14px); transform: scale(-1); }
 
-  @keyframes floatBob {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
+/* ============================================
+   HEADER FLOWERS — FLUID SVG
+============================================ */
+.flower-header {
+  text-align: center;
+  margin-bottom: clamp(10px, 3vw, 18px);
+  position: relative;
+  z-index: 2;
+  animation: floatBob 4s ease-in-out infinite;
+  /* Keep SVG from causing overflow */
+  overflow: hidden;
+}
 
-  /* Date badge */
-  .date-badge {
-    text-align: center;
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 2;
-  }
+.flower-header svg,
+.flower-footer svg {
+  max-width: 100%;
+  height: auto;
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+/* ============================================
+   DATE BADGE
+============================================ */
+.date-badge {
+  text-align: center;
+  margin-bottom: clamp(6px, 1.5vw, 10px);
+  position: relative;
+  z-index: 2;
+}
+
+.date-badge span {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(9px, 2.5vw, 13px);
+  font-weight: 600;
+  letter-spacing: clamp(1px, 1vw, 4px);
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #d4af37, #f0c060, #d4af37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  /* Prevent overflow on very small screens */
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================================
+   DIVIDER
+============================================ */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 2vw, 12px);
+  margin: clamp(4px, 1.5vw, 8px) 0 clamp(10px, 3vw, 18px);
+  position: relative;
+  z-index: 2;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
+}
+
+.divider-diamond {
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(45deg, #d4af37, #f0c060);
+  transform: rotate(45deg);
+  box-shadow: 0 0 6px rgba(212,175,55,0.5);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   RECIPIENT NAME
+============================================ */
+.recipient-name {
+  text-align: center;
+  margin-bottom: clamp(14px, 3.5vw, 20px);
+  position: relative;
+  z-index: 2;
+}
+
+.recipient-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(12px, 3vw, 14px);
+  font-style: italic;
+  color: #b06080;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+}
+
+.recipient-name h1 {
+  font-family: 'Dancing Script', cursive;
+  /* Fluid font: 38px on 320px → 58px on 520px+ */
+  font-size: clamp(38px, 11vw, 58px);
+  font-weight: 700;
+  background: linear-gradient(135deg,
+    #8b3060 0%,
+    #c0507a 25%,
+    #d4607a 50%,
+    #b84070 75%,
+    #8b3060 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nameGlow 3s ease-in-out infinite alternate;
+  filter: drop-shadow(0 2px 10px rgba(180,80,120,0.4));
+  line-height: 1.1;
+}
+
+@keyframes nameGlow {
+  0%   { background-position: 0%   50%; filter: drop-shadow(0 2px 12px rgba(180,80,120,0.4)); }
+  100% { background-position: 100% 50%; filter: drop-shadow(0 4px 18px rgba(212,175,55,0.5)); }
+}
+
+/* ============================================
+   MESSAGE CONTAINER
+============================================ */
+.message-container {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.5) 0%,
+    rgba(255,240,248,0.5) 100%);
+  border: 1px solid rgba(212,175,55,0.2);
+  border-radius: clamp(10px, 3vw, 16px);
+  padding: clamp(16px, 4vw, 24px) clamp(14px, 4vw, 28px);
+  margin: 4px 0 clamp(14px, 4vw, 22px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.message-line {
+  font-family: 'Cormorant Garamond', serif;
+  color: #5c2040;
+  line-height: 1.75;
+  text-align: center;
+  animation: textFadeIn 1.5s ease both;
+}
+
+.message-congrats {
+  font-size: clamp(14px, 3.8vw, 18px);
+  font-weight: 500;
+  color: #4a1830;
+  margin-bottom: clamp(8px, 2vw, 12px);
+  animation-delay: 0.4s;
+}
+
+.message-wish {
+  font-size: clamp(13px, 3.4vw, 15.5px);
+  font-weight: 400;
+  color: #5c2840;
+  margin-bottom: clamp(5px, 1.5vw, 8px);
+  animation-delay: 0.7s;
+}
+
+.message-closing {
+  font-size: clamp(13px, 3.5vw, 16px);
+  font-style: italic;
+  font-weight: 300;
+  color: #7a3055;
+  margin-top: clamp(6px, 2vw, 10px);
+  animation-delay: 1s;
+}
+
+@keyframes textFadeIn {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   FOOTER FLOWERS
+============================================ */
+.flower-footer {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  margin-top: 4px;
+  animation: floatBob 4s ease-in-out infinite;
+  animation-delay: 1s;
+  overflow: hidden;
+}
+
+/* ============================================
+   SIGNATURE
+============================================ */
+.signature {
+  text-align: center;
+  margin-top: clamp(10px, 3vw, 18px);
+  position: relative;
+  z-index: 2;
+}
+
+.signature-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(14px, 4vw, 22px);
+  background: linear-gradient(90deg, #d4af37, #f0c060, #d4af37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 1px 4px rgba(212,175,55,0.3));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* ============================================
+   GLOW ORBS
+============================================ */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb-1 {
+  width: clamp(100px, 30vw, 180px);
+  height: clamp(100px, 30vw, 180px);
+  top:  clamp(-40px, -10vw, -60px);
+  right: clamp(-20px, -6vw, -40px);
+  background: radial-gradient(circle, rgba(255,180,200,0.3) 0%, transparent 70%);
+  animation: orbPulse 5s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: clamp(80px, 24vw, 140px);
+  height: clamp(80px, 24vw, 140px);
+  bottom: clamp(-30px, -8vw, -50px);
+  left:   clamp(-15px, -4vw, -30px);
+  background: radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%);
+  animation: orbPulse 6s ease-in-out infinite reverse;
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1);   opacity: 0.6; }
+  50%       { transform: scale(1.2); opacity: 1; }
+}
+
+/* ============================================
+   SPARKLES
+============================================ */
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f0c060;
+  pointer-events: none;
+  z-index: 3;
+  animation: sparkleTwinkle ease-in-out infinite;
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50%       { opacity: 1; transform: scale(1); box-shadow: 0 0 6px 2px rgba(240,192,96,0.6); }
+}
+
+/* ============================================
+   MOBILE MEDIA QUERIES
+============================================ */
+
+/* Extra small phones: 320px – 374px */
+@media (max-width: 374px) {
+  body { padding: 10px 8px; }
 
   .date-badge span {
-    font-family: 'Playfair Display', serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #c07090;
-    background: linear-gradient(90deg, #d4af37, #f0c060, #d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 8px;
+    letter-spacing: 0.5px;
   }
 
-  /* Decorative divider */
-  .divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin: 8px 0 18px;
-    position: relative;
-    z-index: 2;
+  .flower-header svg { width: 100% !important; }
+  .flower-footer svg { width: 100% !important; }
+
+  /* Reduce corner ornament size */
+  .corner { width: 32px; height: 32px; }
+
+  /* Simplify message container padding */
+  .message-container { padding: 14px 12px; }
+
+  /* Hide some sparkles on tiny screens */
+  .sparkle:nth-child(n+5) { display: none; }
+}
+
+/* Small phones: 375px – 480px */
+@media (min-width: 375px) and (max-width: 480px) {
+  body { padding: 12px 10px; }
+
+  .flower-header svg { width: 100% !important; }
+  .flower-footer svg { width: 95% !important; }
+}
+
+/* Medium phones: 481px – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  body { padding: 20px 16px; }
+}
+
+/* Tablets portrait: 768px – 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .card-wrapper { max-width: 560px; }
+  body { padding: 32px 24px; }
+}
+
+/* Landscape orientation on phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    padding: 8px 16px;
+    align-items: flex-start;
+    overflow-y: auto;
   }
 
-  .divider-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
-  }
+  .card-wrapper { max-width: 480px; }
 
-  .divider-diamond {
-    width: 6px;
-    height: 6px;
-    background: linear-gradient(45deg, #d4af37, #f0c060);
-    transform: rotate(45deg);
-    box-shadow: 0 0 6px rgba(212,175,55,0.5);
-  }
+  .flower-header { margin-bottom: 6px; }
 
-  /* Name */
-  .recipient-name {
-    text-align: center;
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 2;
-  }
+  .recipient-name h1 { font-size: clamp(30px, 7vh, 46px); }
 
-  .recipient-name h1 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 58px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #8b3060 0%, #c0507a 25%, #d4607a 50%, #b84070 75%, #8b3060 100%);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: nameGlow 3s ease-in-out infinite alternate;
-    text-shadow: none;
-    filter: drop-shadow(0 2px 12px rgba(180,80,120,0.4));
-    line-height: 1.1;
-  }
+  /* Compress message container */
+  .message-container { padding: 12px 16px; }
+  .message-line { line-height: 1.55; }
 
-  @keyframes nameGlow {
-    0%   { background-position: 0% 50%; filter: drop-shadow(0 2px 12px rgba(180,80,120,0.4)); }
-    100% { background-position: 100% 50%; filter: drop-shadow(0 4px 20px rgba(212,175,55,0.5)); }
-  }
+  .flower-footer { display: none; } /* save vertical space in landscape */
 
-  .recipient-label {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
-    font-style: italic;
-    color: #b06080;
-    letter-spacing: 2px;
-    margin-top: 2px;
-  }
+  /* Reduce petal count via JS — handled below */
+}
 
-  /* Main text */
-  .message-container {
-    position: relative;
-    z-index: 2;
-    background: linear-gradient(135deg,
-      rgba(255,255,255,0.5) 0%,
-      rgba(255,240,248,0.5) 100%);
-    border: 1px solid rgba(212,175,55,0.2);
-    border-radius: 16px;
-    padding: 24px 28px;
-    margin: 4px 0 22px;
-    backdrop-filter: blur(4px);
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
+  .petal-container { display: none; }
+}
 
-  .message-line {
-    font-family: 'Cormorant Garamond', serif;
-    color: #5c2040;
-    line-height: 1.75;
-    text-align: center;
-    animation: textFadeIn 1.5s ease both;
+/* High DPI / Retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .card {
+    box-shadow:
+      0 0 0 0.5px rgba(255,180,200,0.4),
+      0 0 40px rgba(255,100,150,0.25),
+      0 0 80px rgba(255,80,130,0.15),
+      0 20px 60px rgba(0,0,0,0.5),
+      inset 0 0.5px 0 rgba(255,255,255,0.9),
+      inset 0 -0.5px 0 rgba(255,180,200,0.3);
   }
+}
 
-  .message-intro {
-    font-size: 16px;
-    font-style: italic;
-    font-weight: 300;
-    color: #8b4060;
-    margin-bottom: 10px;
-    animation-delay: 0.4s;
+/* Safe area insets for notched phones (iPhone X+) */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-left:  max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-top:   max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
   }
-
-  .message-congrats {
-    font-size: 18px;
-    font-weight: 500;
-    color: #4a1830;
-    margin-bottom: 12px;
-    animation-delay: 0.6s;
-  }
-
-  .message-wish {
-    font-size: 15.5px;
-    font-weight: 400;
-    color: #5c2840;
-    margin-bottom: 8px;
-    animation-delay: 0.8s;
-  }
-
-  .message-closing {
-    font-size: 16px;
-    font-style: italic;
-    font-weight: 300;
-    color: #7a3055;
-    margin-top: 10px;
-    animation-delay: 1s;
-  }
-
-  @keyframes textFadeIn {
-    0%   { opacity: 0; transform: translateY(12px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Bottom floral strip */
-  .flower-footer {
-    text-align: center;
-    position: relative;
-    z-index: 2;
-    margin-top: 4px;
-    animation: floatBob 4s ease-in-out infinite;
-    animation-delay: 1s;
-  }
-
-  /* Signature */
-  .signature {
-    text-align: center;
-    margin-top: 18px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .signature-text {
-    font-family: 'Dancing Script', cursive;
-    font-size: 22px;
-    color: #c07090;
-    background: linear-gradient(90deg, #d4af37, #f0c060, #d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 1px 4px rgba(212,175,55,0.3));
-  }
-
-  /* Glowing orbs in background */
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb-1 {
-    width: 180px; height: 180px;
-    top: -60px; right: -40px;
-    background: radial-gradient(circle, rgba(255,180,200,0.3) 0%, transparent 70%);
-    animation: orbPulse 5s ease-in-out infinite;
-  }
-  .orb-2 {
-    width: 140px; height: 140px;
-    bottom: -50px; left: -30px;
-    background: radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%);
-    animation: orbPulse 6s ease-in-out infinite reverse;
-  }
-
-  @keyframes orbPulse {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.2); opacity: 1; }
-  }
-
-  /* Sparkle particles */
-  .sparkle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #f0c060;
-    pointer-events: none;
-    z-index: 3;
-    animation: sparkleTwinkle ease-in-out infinite;
-  }
-
-  @keyframes sparkleTwinkle {
-    0%, 100% { opacity: 0; transform: scale(0); }
-    50% { opacity: 1; transform: scale(1); box-shadow: 0 0 6px 2px rgba(240,192,96,0.6); }
-  }
+}
 </style>
 </head>
 <body>
@@ -385,21 +574,7 @@
     <div class="orb orb-2"></div>
 
     <!-- Corner ornaments -->
-    <svg class="corner corner-tl" viewBox="0 0 70 70" fill="none">
-      <path d="M8,8 Q8,50 50,62" stroke="rgba(212,175,55,0.6)" stroke-width="1.2" fill="none"/>
-      <path d="M14,8 Q14,46 56,58" stroke="rgba(212,175,55,0.3)" stroke-width="0.8" fill="none"/>
-      <circle cx="8" cy="8" r="3" fill="rgba(212,175,55,0.7)"/>
-      <path d="M8,8 L22,8 M8,8 L8,22" stroke="rgba(212,175,55,0.6)" stroke-width="1.2"/>
-      <!-- small flower -->
-      <circle cx="35" cy="35" r="4" fill="rgba(255,150,180,0.4)"/>
-      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(0 35 35)"/>
-      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(60 35 35)"/>
-      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(120 35 35)"/>
-      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(180 35 35)"/>
-      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(240 35 35)"/>
-      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(300 35 35)"/>
-    </svg>
-    <svg class="corner corner-tr" viewBox="0 0 70 70" fill="none">
+    <svg class="corner corner-tl" viewBox="0 0 70 70" fill="none" aria-hidden="true">
       <path d="M8,8 Q8,50 50,62" stroke="rgba(212,175,55,0.6)" stroke-width="1.2" fill="none"/>
       <path d="M14,8 Q14,46 56,58" stroke="rgba(212,175,55,0.3)" stroke-width="0.8" fill="none"/>
       <circle cx="8" cy="8" r="3" fill="rgba(212,175,55,0.7)"/>
@@ -412,7 +587,7 @@
       <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(240 35 35)"/>
       <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(300 35 35)"/>
     </svg>
-    <svg class="corner corner-bl" viewBox="0 0 70 70" fill="none">
+    <svg class="corner corner-tr" viewBox="0 0 70 70" fill="none" aria-hidden="true">
       <path d="M8,8 Q8,50 50,62" stroke="rgba(212,175,55,0.6)" stroke-width="1.2" fill="none"/>
       <path d="M14,8 Q14,46 56,58" stroke="rgba(212,175,55,0.3)" stroke-width="0.8" fill="none"/>
       <circle cx="8" cy="8" r="3" fill="rgba(212,175,55,0.7)"/>
@@ -425,7 +600,20 @@
       <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(240 35 35)"/>
       <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(300 35 35)"/>
     </svg>
-    <svg class="corner corner-br" viewBox="0 0 70 70" fill="none">
+    <svg class="corner corner-bl" viewBox="0 0 70 70" fill="none" aria-hidden="true">
+      <path d="M8,8 Q8,50 50,62" stroke="rgba(212,175,55,0.6)" stroke-width="1.2" fill="none"/>
+      <path d="M14,8 Q14,46 56,58" stroke="rgba(212,175,55,0.3)" stroke-width="0.8" fill="none"/>
+      <circle cx="8" cy="8" r="3" fill="rgba(212,175,55,0.7)"/>
+      <path d="M8,8 L22,8 M8,8 L8,22" stroke="rgba(212,175,55,0.6)" stroke-width="1.2"/>
+      <circle cx="35" cy="35" r="4" fill="rgba(255,150,180,0.4)"/>
+      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(0 35 35)"/>
+      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(60 35 35)"/>
+      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(120 35 35)"/>
+      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(180 35 35)"/>
+      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(240 35 35)"/>
+      <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(300 35 35)"/>
+    </svg>
+    <svg class="corner corner-br" viewBox="0 0 70 70" fill="none" aria-hidden="true">
       <path d="M8,8 Q8,50 50,62" stroke="rgba(212,175,55,0.6)" stroke-width="1.2" fill="none"/>
       <path d="M14,8 Q14,46 56,58" stroke="rgba(212,175,55,0.3)" stroke-width="0.8" fill="none"/>
       <circle cx="8" cy="8" r="3" fill="rgba(212,175,55,0.7)"/>
@@ -439,34 +627,29 @@
       <ellipse cx="35" cy="29" rx="3" ry="5" fill="rgba(255,150,180,0.35)" transform="rotate(300 35 35)"/>
     </svg>
 
-    <!-- Header flowers -->
-    <div class="flower-header">
-      <svg width="340" height="90" viewBox="0 0 340 90" fill="none">
-        <!-- Left branch -->
+    <!-- Header flowers — fluid SVG with viewBox preserved -->
+    <div class="flower-header" aria-hidden="true">
+      <svg viewBox="0 0 340 90" fill="none"
+           style="width:min(340px,100%);height:auto;display:block;margin:0 auto;">
         <path d="M10,85 Q40,60 80,50 Q110,42 140,55" stroke="#c8a0b0" stroke-width="1.5" fill="none" opacity="0.6"/>
-        <!-- Right branch -->
         <path d="M330,85 Q300,60 260,50 Q230,42 200,55" stroke="#c8a0b0" stroke-width="1.5" fill="none" opacity="0.6"/>
-        <!-- Left leaves -->
-        <ellipse cx="55" cy="58" rx="14" ry="7" fill="#a8c898" opacity="0.55" transform="rotate(-30 55 58)"/>
-        <ellipse cx="90" cy="48" rx="12" ry="6" fill="#b8d8a8" opacity="0.45" transform="rotate(-15 90 48)"/>
-        <!-- Right leaves -->
+        <ellipse cx="55"  cy="58" rx="14" ry="7" fill="#a8c898" opacity="0.55" transform="rotate(-30 55 58)"/>
+        <ellipse cx="90"  cy="48" rx="12" ry="6" fill="#b8d8a8" opacity="0.45" transform="rotate(-15 90 48)"/>
         <ellipse cx="285" cy="58" rx="14" ry="7" fill="#a8c898" opacity="0.55" transform="rotate(30 285 58)"/>
         <ellipse cx="250" cy="48" rx="12" ry="6" fill="#b8d8a8" opacity="0.45" transform="rotate(15 250 48)"/>
-
         <!-- Large center rose -->
         <g transform="translate(170,38)">
-          <ellipse cx="0" cy="8" rx="18" ry="12" fill="#f4a0b8" opacity="0.8"/>
-          <ellipse cx="-8" cy="2" rx="14" ry="10" fill="#f0b0c0" opacity="0.75" transform="rotate(-20 -8 2)"/>
-          <ellipse cx="8" cy="2" rx="14" ry="10" fill="#f0b0c0" opacity="0.75" transform="rotate(20 8 2)"/>
-          <ellipse cx="0" cy="-4" rx="12" ry="9" fill="#f8b8c8" opacity="0.8"/>
-          <ellipse cx="-6" cy="-8" rx="10" ry="8" fill="#fcc8d8" opacity="0.85" transform="rotate(-15 -6 -8)"/>
-          <ellipse cx="6" cy="-8" rx="10" ry="8" fill="#fcc8d8" opacity="0.85" transform="rotate(15 6 -8)"/>
-          <ellipse cx="0" cy="-12" rx="8" ry="7" fill="#fdd0dc" opacity="0.9"/>
-          <circle cx="0" cy="-14" r="5" fill="#fed8e4" opacity="0.95"/>
-          <circle cx="0" cy="-14" r="2.5" fill="#fff0f5"/>
+          <ellipse cx="0" cy="8"   rx="18" ry="12" fill="#f4a0b8" opacity="0.8"/>
+          <ellipse cx="-8" cy="2"  rx="14" ry="10" fill="#f0b0c0" opacity="0.75" transform="rotate(-20 -8 2)"/>
+          <ellipse cx="8"  cy="2"  rx="14" ry="10" fill="#f0b0c0" opacity="0.75" transform="rotate(20 8 2)"/>
+          <ellipse cx="0" cy="-4"  rx="12" ry="9"  fill="#f8b8c8" opacity="0.8"/>
+          <ellipse cx="-6" cy="-8" rx="10" ry="8"  fill="#fcc8d8" opacity="0.85" transform="rotate(-15 -6 -8)"/>
+          <ellipse cx="6"  cy="-8" rx="10" ry="8"  fill="#fcc8d8" opacity="0.85" transform="rotate(15 6 -8)"/>
+          <ellipse cx="0" cy="-12" rx="8"  ry="7"  fill="#fdd0dc" opacity="0.9"/>
+          <circle  cx="0" cy="-14" r="5"           fill="#fed8e4" opacity="0.95"/>
+          <circle  cx="0" cy="-14" r="2.5"         fill="#fff0f5"/>
         </g>
-
-        <!-- Left small flower 1 -->
+        <!-- Left flowers -->
         <g transform="translate(100,52)">
           <ellipse cx="0" cy="-7" rx="5" ry="8" fill="#f9c0d0" opacity="0.8"/>
           <ellipse cx="0" cy="-7" rx="5" ry="8" fill="#f9c0d0" opacity="0.8" transform="rotate(60 0 0)"/>
@@ -477,8 +660,6 @@
           <circle cx="0" cy="0" r="4" fill="#fdeef5"/>
           <circle cx="0" cy="0" r="2" fill="#f9d4e4"/>
         </g>
-
-        <!-- Left small flower 2 -->
         <g transform="translate(60,62)">
           <ellipse cx="0" cy="-6" rx="4" ry="7" fill="#e8b0c8" opacity="0.7"/>
           <ellipse cx="0" cy="-6" rx="4" ry="7" fill="#e8b0c8" opacity="0.7" transform="rotate(72 0 0)"/>
@@ -487,8 +668,7 @@
           <ellipse cx="0" cy="-6" rx="4" ry="7" fill="#e8b0c8" opacity="0.7" transform="rotate(288 0 0)"/>
           <circle cx="0" cy="0" r="3.5" fill="#fdeef5"/>
         </g>
-
-        <!-- Right small flower 1 -->
+        <!-- Right flowers -->
         <g transform="translate(240,52)">
           <ellipse cx="0" cy="-7" rx="5" ry="8" fill="#f9c0d0" opacity="0.8"/>
           <ellipse cx="0" cy="-7" rx="5" ry="8" fill="#f9c0d0" opacity="0.8" transform="rotate(60 0 0)"/>
@@ -499,8 +679,6 @@
           <circle cx="0" cy="0" r="4" fill="#fdeef5"/>
           <circle cx="0" cy="0" r="2" fill="#f9d4e4"/>
         </g>
-
-        <!-- Right small flower 2 -->
         <g transform="translate(280,62)">
           <ellipse cx="0" cy="-6" rx="4" ry="7" fill="#e8b0c8" opacity="0.7"/>
           <ellipse cx="0" cy="-6" rx="4" ry="7" fill="#e8b0c8" opacity="0.7" transform="rotate(72 0 0)"/>
@@ -509,14 +687,13 @@
           <ellipse cx="0" cy="-6" rx="4" ry="7" fill="#e8b0c8" opacity="0.7" transform="rotate(288 0 0)"/>
           <circle cx="0" cy="0" r="3.5" fill="#fdeef5"/>
         </g>
-
         <!-- Gold sparkles -->
-        <circle cx="130" cy="40" r="2" fill="#d4af37" opacity="0.8"/>
-        <circle cx="210" cy="40" r="2" fill="#d4af37" opacity="0.8"/>
+        <circle cx="130" cy="40" r="2"   fill="#d4af37" opacity="0.8"/>
+        <circle cx="210" cy="40" r="2"   fill="#d4af37" opacity="0.8"/>
         <circle cx="145" cy="30" r="1.5" fill="#f0c060" opacity="0.7"/>
         <circle cx="195" cy="30" r="1.5" fill="#f0c060" opacity="0.7"/>
-        <circle cx="160" cy="22" r="1" fill="#d4af37" opacity="0.6"/>
-        <circle cx="180" cy="22" r="1" fill="#d4af37" opacity="0.6"/>
+        <circle cx="160" cy="22" r="1"   fill="#d4af37" opacity="0.6"/>
+        <circle cx="180" cy="22" r="1"   fill="#d4af37" opacity="0.6"/>
       </svg>
     </div>
 
@@ -526,7 +703,7 @@
     </div>
 
     <!-- Divider -->
-    <div class="divider">
+    <div class="divider" aria-hidden="true">
       <div class="divider-line"></div>
       <div class="divider-diamond"></div>
       <div class="divider-line"></div>
@@ -539,9 +716,9 @@
     </div>
 
     <!-- Message -->
-    <div class="message-container">
+    <div class="message-container" role="article" aria-label="Құттықтау хаты">
       <p class="message-line message-congrats">
-        Сені 8 Наурыз — Халықаралық әйелдер күнімен<br>шын жүректен құттықтаймын!
+        Сені 8 Наурыз — Халықаралық әйелдер күнімен шын жүректен құттықтаймын!
       </p>
       <p class="message-line message-wish">
         Әр күнің қуанышқа, жүрегің бақытқа толы болсын.
@@ -555,11 +732,10 @@
     </div>
 
     <!-- Footer flowers -->
-    <div class="flower-footer">
-      <svg width="300" height="55" viewBox="0 0 300 55" fill="none">
+    <div class="flower-footer" aria-hidden="true">
+      <svg viewBox="0 0 300 55" fill="none"
+           style="width:min(300px,90%);height:auto;display:block;margin:0 auto;">
         <path d="M10,10 Q75,5 150,8 Q225,5 290,10" stroke="rgba(212,175,55,0.3)" stroke-width="1" fill="none"/>
-
-        <!-- Small scattered flowers -->
         <g transform="translate(40,28)">
           <ellipse cx="0" cy="-5" rx="4" ry="6" fill="#f0b8c8" opacity="0.7"/>
           <ellipse cx="0" cy="-5" rx="4" ry="6" fill="#f0b8c8" opacity="0.7" transform="rotate(60 0 0)"/>
@@ -569,7 +745,6 @@
           <ellipse cx="0" cy="-5" rx="4" ry="6" fill="#f0b8c8" opacity="0.7" transform="rotate(300 0 0)"/>
           <circle cx="0" cy="0" r="3" fill="#fdeef5"/>
         </g>
-
         <g transform="translate(260,28)">
           <ellipse cx="0" cy="-5" rx="4" ry="6" fill="#f0b8c8" opacity="0.7"/>
           <ellipse cx="0" cy="-5" rx="4" ry="6" fill="#f0b8c8" opacity="0.7" transform="rotate(60 0 0)"/>
@@ -579,38 +754,33 @@
           <ellipse cx="0" cy="-5" rx="4" ry="6" fill="#f0b8c8" opacity="0.7" transform="rotate(300 0 0)"/>
           <circle cx="0" cy="0" r="3" fill="#fdeef5"/>
         </g>
-
         <!-- Center mini rose -->
         <g transform="translate(150,30)">
-          <ellipse cx="0" cy="6" rx="12" ry="8" fill="#f4a0b8" opacity="0.75"/>
-          <ellipse cx="-6" cy="2" rx="9" ry="7" fill="#f0b0c0" opacity="0.7" transform="rotate(-20 -6 2)"/>
-          <ellipse cx="6" cy="2" rx="9" ry="7" fill="#f0b0c0" opacity="0.7" transform="rotate(20 6 2)"/>
-          <ellipse cx="0" cy="-2" rx="8" ry="6" fill="#f8b8c8" opacity="0.8"/>
-          <ellipse cx="0" cy="-7" rx="6" ry="5" fill="#fcc8d8" opacity="0.9"/>
-          <circle cx="0" cy="-8" r="3" fill="#fdeef5"/>
+          <ellipse cx="0"  cy="6"  rx="12" ry="8" fill="#f4a0b8" opacity="0.75"/>
+          <ellipse cx="-6" cy="2"  rx="9"  ry="7" fill="#f0b0c0" opacity="0.7" transform="rotate(-20 -6 2)"/>
+          <ellipse cx="6"  cy="2"  rx="9"  ry="7" fill="#f0b0c0" opacity="0.7" transform="rotate(20 6 2)"/>
+          <ellipse cx="0"  cy="-2" rx="8"  ry="6" fill="#f8b8c8" opacity="0.8"/>
+          <ellipse cx="0"  cy="-7" rx="6"  ry="5" fill="#fcc8d8" opacity="0.9"/>
+          <circle  cx="0"  cy="-8" r="3"           fill="#fdeef5"/>
         </g>
-
         <!-- Gold dots -->
-        <circle cx="80" cy="15" r="1.5" fill="#d4af37" opacity="0.6"/>
-        <circle cx="100" cy="25" r="1" fill="#f0c060" opacity="0.5"/>
+        <circle cx="80"  cy="15" r="1.5" fill="#d4af37" opacity="0.6"/>
+        <circle cx="100" cy="25" r="1"   fill="#f0c060" opacity="0.5"/>
         <circle cx="200" cy="15" r="1.5" fill="#d4af37" opacity="0.6"/>
-        <circle cx="220" cy="25" r="1" fill="#f0c060" opacity="0.5"/>
+        <circle cx="220" cy="25" r="1"   fill="#f0c060" opacity="0.5"/>
         <circle cx="130" cy="12" r="1.5" fill="#d4af37" opacity="0.5"/>
         <circle cx="170" cy="12" r="1.5" fill="#d4af37" opacity="0.5"/>
-
-        <!-- Left leaf -->
         <ellipse cx="100" cy="32" rx="18" ry="7" fill="#a8c898" opacity="0.4" transform="rotate(15 100 32)"/>
-        <!-- Right leaf -->
         <ellipse cx="200" cy="32" rx="18" ry="7" fill="#a8c898" opacity="0.4" transform="rotate(-15 200 32)"/>
       </svg>
     </div>
 
     <!-- Signature -->
     <div class="signature">
-      <div class="signature-text">✦ Мәңгілік бақыт пен сүйіспеншілікпен ✦</div>
+      <span class="signature-text">✦ Мәңгілік бақыт пен сүйіспеншілікпен ✦</span>
     </div>
 
-    <!-- Sparkles positioned inside card -->
+    <!-- Sparkles -->
     <div class="sparkle" style="top:18%;left:12%;animation-duration:2.3s;animation-delay:0.2s;"></div>
     <div class="sparkle" style="top:22%;right:14%;animation-duration:3.1s;animation-delay:0.7s;"></div>
     <div class="sparkle" style="top:45%;left:8%;animation-duration:2.7s;animation-delay:1.1s;"></div>
@@ -621,80 +791,132 @@
 </div>
 
 <script>
-// Generate floating petals
-function createPetal() {
-  const container = document.getElementById('petalContainer');
-  const petal = document.createElement('div');
-  petal.className = 'petal';
+(function () {
+  'use strict';
 
-  const size = 12 + Math.random() * 22;
-  const leftPos = Math.random() * 100;
-  const duration = 8 + Math.random() * 12;
-  const delay = Math.random() * 15;
+  /* ── Detect capabilities ── */
+  const isMobile   = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isLandscape = () => window.innerWidth > window.innerHeight;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const colors = [
-    ['#f9c0d4','#f4a0b8'],
-    ['#fdd8e8','#f9b8cc'],
-    ['#f0a8c0','#e890b0'],
-    ['#fce8f0','#f8c8dc'],
-    ['#e8a0c0','#d888b0'],
-  ];
-  const [fill1, fill2] = colors[Math.floor(Math.random() * colors.length)];
-
-  petal.style.cssText = `
-    left: ${leftPos}%;
-    animation-duration: ${duration}s;
-    animation-delay: ${delay}s;
-  `;
-
-  // Random petal shapes
-  const shape = Math.random();
-  if (shape < 0.5) {
-    petal.innerHTML = `<svg width="${size}" height="${size*1.4}" viewBox="0 0 20 28" fill="none">
-      <ellipse cx="10" cy="14" rx="8" ry="13" fill="${fill1}" opacity="0.85" transform="rotate(${Math.random()*30-15} 10 14)"/>
-      <ellipse cx="10" cy="14" rx="4" ry="9" fill="${fill2}" opacity="0.4"/>
-    </svg>`;
-  } else {
-    petal.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none">
-      <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8"/>
-      <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8" transform="rotate(72 12 12)"/>
-      <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8" transform="rotate(144 12 12)"/>
-      <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8" transform="rotate(216 12 12)"/>
-      <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8" transform="rotate(288 12 12)"/>
-      <circle cx="12" cy="12" r="3" fill="${fill2}" opacity="0.9"/>
-    </svg>`;
+  /* ── Adaptive petal count ── */
+  function maxPetals() {
+    if (prefersReducedMotion) return 0;
+    const vw = window.innerWidth;
+    if (vw < 375)  return 6;
+    if (vw < 480)  return 10;
+    if (isMobile)  return 12;
+    return 18;
   }
 
-  container.appendChild(petal);
+  function petalInterval() {
+    if (isMobile) return 1400;
+    return 800;
+  }
 
-  setTimeout(() => {
-    if (petal.parentNode) petal.parentNode.removeChild(petal);
-  }, (duration + delay + 2) * 1000);
-}
+  /* ── Create a single petal ── */
+  function createPetal() {
+    if (prefersReducedMotion) return;
+    const container = document.getElementById('petalContainer');
+    if (!container) return;
 
-// Create initial batch
-for (let i = 0; i < 18; i++) createPetal();
-// Continuously generate petals
-setInterval(createPetal, 800);
+    // Throttle petal count
+    const existing = container.querySelectorAll('.petal').length;
+    if (existing >= maxPetals()) return;
 
-// Subtle card tilt on mouse move
-const card = document.getElementById('card');
-const wrapper = document.querySelector('.card-wrapper');
+    const petal   = document.createElement('div');
+    petal.className = 'petal';
 
-document.addEventListener('mousemove', (e) => {
-  const rect = wrapper.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
-  const dx = (e.clientX - cx) / (window.innerWidth / 2);
-  const dy = (e.clientY - cy) / (window.innerHeight / 2);
-  card.style.transform = `rotateY(${dx * 6}deg) rotateX(${-dy * 4}deg)`;
-  card.style.transition = 'transform 0.1s ease';
-});
+    const size     = 10 + Math.random() * 18;
+    const leftPos  = Math.random() * 100;
+    const duration = (isMobile ? 10 : 8) + Math.random() * 10;
+    const delay    = Math.random() * 8;
 
-document.addEventListener('mouseleave', () => {
-  card.style.transform = 'rotateY(0) rotateX(0)';
-  card.style.transition = 'transform 0.6s ease';
-});
+    const COLORS = [
+      ['#f9c0d4','#f4a0b8'],
+      ['#fdd8e8','#f9b8cc'],
+      ['#f0a8c0','#e890b0'],
+      ['#fce8f0','#f8c8dc'],
+      ['#e8a0c0','#d888b0'],
+    ];
+    const [fill1, fill2] = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+    petal.style.cssText = `left:${leftPos}%;animation-duration:${duration}s;animation-delay:${delay}s;`;
+
+    if (Math.random() < 0.5) {
+      petal.innerHTML = `<svg width="${size}" height="${size*1.4}" viewBox="0 0 20 28" fill="none">
+        <ellipse cx="10" cy="14" rx="8" ry="13" fill="${fill1}" opacity="0.85" transform="rotate(${Math.random()*30-15} 10 14)"/>
+        <ellipse cx="10" cy="14" rx="4" ry="9" fill="${fill2}" opacity="0.4"/>
+      </svg>`;
+    } else {
+      petal.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none">
+        <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8"/>
+        <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8" transform="rotate(72 12 12)"/>
+        <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8" transform="rotate(144 12 12)"/>
+        <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8" transform="rotate(216 12 12)"/>
+        <ellipse cx="12" cy="7" rx="6" ry="9" fill="${fill1}" opacity="0.8" transform="rotate(288 12 12)"/>
+        <circle cx="12" cy="12" r="3" fill="${fill2}" opacity="0.9"/>
+      </svg>`;
+    }
+
+    container.appendChild(petal);
+
+    const totalMs = (duration + delay + 1) * 1000;
+    setTimeout(() => petal.parentNode && petal.parentNode.removeChild(petal), totalMs);
+  }
+
+  /* ── Initial burst + interval ── */
+  const initialCount = Math.min(maxPetals(), isMobile ? 6 : 14);
+  for (let i = 0; i < initialCount; i++) createPetal();
+  setInterval(createPetal, petalInterval());
+
+  /* ── 3D tilt: desktop mouse only ── */
+  if (!isMobile && !prefersReducedMotion) {
+    const card    = document.getElementById('card');
+    const wrapper = document.querySelector('.card-wrapper');
+
+    document.addEventListener('mousemove', (e) => {
+      const rect = wrapper.getBoundingClientRect();
+      const cx = rect.left + rect.width  / 2;
+      const cy = rect.top  + rect.height / 2;
+      const dx = (e.clientX - cx) / (window.innerWidth  / 2);
+      const dy = (e.clientY - cy) / (window.innerHeight / 2);
+      card.style.transform  = `rotateY(${dx * 6}deg) rotateX(${-dy * 4}deg)`;
+      card.style.transition = 'transform 0.1s ease';
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', () => {
+      card.style.transform  = 'rotateY(0) rotateX(0)';
+      card.style.transition = 'transform 0.6s ease';
+    });
+  }
+
+  /* ── Touch ripple effect for mobile ── */
+  if (isMobile) {
+    const card = document.getElementById('card');
+    card.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      const rect  = card.getBoundingClientRect();
+      const x = ((touch.clientX - rect.left) / rect.width  - 0.5) * 8;
+      const y = ((touch.clientY - rect.top)  / rect.height - 0.5) * 6;
+      card.style.transform  = `rotateY(${x}deg) rotateX(${-y}deg) scale(0.99)`;
+      card.style.transition = 'transform 0.15s ease';
+    }, { passive: true });
+
+    card.addEventListener('touchend', () => {
+      card.style.transform  = 'rotateY(0) rotateX(0) scale(1)';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.22,1,0.36,1)';
+    }, { passive: true });
+  }
+
+  /* ── Pause animations when tab is hidden (battery saving) ── */
+  document.addEventListener('visibilitychange', () => {
+    const container = document.getElementById('petalContainer');
+    if (!container) return;
+    container.style.animationPlayState = document.hidden ? 'paused' : 'running';
+  });
+
+})();
 </script>
 </body>
 </html>
